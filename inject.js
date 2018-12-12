@@ -1,4 +1,4 @@
-import * as errorTypes from './errorTypes'
+import * as methodNames from './needErrorHandleMethodName'
 import apiUniErrorHandler from './apiUniErroHandler'
 import { GXClient } from 'gxclient'
 
@@ -100,7 +100,7 @@ class GScatter {
                 this.useIdentity(identity)
                 resolve(identity)
             }).catch(err => {
-                apiUniErrorHandler(err, reject, errorTypes.GET_IDENTITY)
+                apiUniErrorHandler(err, reject, methodNames.GET_IDENTITY)
             })
         })
     }
@@ -111,7 +111,7 @@ class GScatter {
             Bridge.removeIdentity().then(() => {
                 resolve(true)
             }).catch(err => {
-                apiUniErrorHandler(err, reject, errorTypes.FORGET_IDENTITY)
+                apiUniErrorHandler(err, reject, methodNames.FORGET_IDENTITY)
             })
         })
     }
