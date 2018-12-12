@@ -1,0 +1,5 @@
+export const GET_IDENTITY = 'getIdentity'
+export const FORGET_IDENTITY = 'forgetIdentity'
+export const TRANSFER = 'transfer'
+export const VOTE = 'vote'
+export const CALL_CONTRACT = 'callContract'
