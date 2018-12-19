@@ -1,9 +1,7 @@
 import * as methodNames from './needErrorHandleMethodName'
 import apiUniErrorHandler from './apiUniErroHandler'
 import { GXClient } from 'gxclient'
-
-// TODO: 完善Bridge
-const Bridge = {}
+import Bridge from './bridge'
 
 // TODO: 返回gxclient所需的地址
 function getWsAddress(network) {
@@ -25,7 +23,7 @@ function getBridgeMethod(name) {
                 return {
                     transaction: res,
                     // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
-                    returnedFileds: {}
+                    returnedFields: {}
                 }
             } else {
                 return res
@@ -57,6 +55,7 @@ const gxc = function (network) {
 
 class GScatter {
     constructor() {
+        this.isExtension = true
         this.identity = null
         this.gxc = gxc
     }
