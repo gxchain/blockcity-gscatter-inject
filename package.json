@@ -5,7 +5,8 @@
   "main": "Error.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack"
+    "build": "webpack --config ./webpack.config.production.js",
+    "dev": "webpack --config ./webpack.config.dev.js -w -d"
   },
   "repository": {
     "type": "git",

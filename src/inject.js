@@ -62,7 +62,10 @@ class GScatter {
 
     init() {
         // 不建议调用getIdentity，因为如果用户没有授权过，一进入页面就会让用户去授权，这样体验可能不太好。正常情况是用户需要点击触发getIdentity
-        return this._getIdentityFromPermission()
+        return new Promise(resolve => {
+            resolve(true)
+            // return this._getIdentityFromPermission()
+        })
     }
 
     // TODO: 用户若之前授权过，直接从授权中取；如果没有授权，返回null。

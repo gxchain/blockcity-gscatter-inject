@@ -1,7 +1,7 @@
 import BlockCity from 'blockcity-js-sdk'
 
 class Bridge {
-    getIdentity() {
+    promptSelectIdentity() {
         return new Promise((resolve, reject) => {
             BlockCity.callAuth({
                 authItem: 'account',
