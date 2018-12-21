@@ -8,8 +8,8 @@
 </head>
 
 <body>
-    lzyyhjkhkh
     <h3 id="accountName"></h3>
+
     <button onclick="login()">Login</button>
     <button onclick="logout()">Logout</button>
     <button onclick="transfer()">Transfer</button>
@@ -19,7 +19,6 @@
     <button onclick="queryAccount()">Query Account By Name</button>
     <button onclick="getBalance()">Get Balance</button>
     <button onclick="checkExtension()">Check Extension</button>
-
     <script>
         const network = {
             blockchain: 'gxc',
@@ -63,28 +62,8 @@
         });
 
         window.login = async () => {
-            let identity
-            try {
-                // if you want user add the network, you could call suggestNetwork, if user already has, nothing happen
-                await gscatter.suggestNetwork(network);
-            } catch (err) {
-                // user refuse or close the prompt window
-                console.error(err)
-                return;
-            }
-
-            try {
-                // required fields, it will appear at gscatter.identity
-                identity = await gscatter.getIdentity({ accounts: [network] })
-            } catch (err) {
-                // user refuse or close the prompt window
-                console.error(err)
-                return;
-            }
-
-            // you could get gscatter.identity.accounts because of { accounts: [network] } before
-            const account = gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
-            setAccountName(account)
+            // required fields, it will appear at gscatter.identity
+            identity = await gscatter.getIdentity({ accounts: [network] })
         };
 
         window.logout = async () => {
@@ -110,7 +89,7 @@
         };
 
         window.contract = () => {
-            gxc.callContract('lzydododo', 'hi', { user: 'lzy' }, 0, true).then(trx => {
+            gxc.callContract('bank', 'deposit', {}, '1 GXC', true).then(trx => {
                 console.log(`call contract success`, trx);
             }).catch(error => {
                 console.error(error);

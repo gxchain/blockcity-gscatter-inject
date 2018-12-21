@@ -10,7 +10,8 @@ function getWsAddress(network) {
 
 // TODO: 是否是需要Bridge提供的方法
 function isBridgeProvideMethod(name) {
-
+    const arr = ['callContract', 'transfer', 'vote']
+    return arr.includes(name)
 }
 
 // TODO: 获取Bridge提供的方法，如transfer、vote、callContract等

@@ -1,4 +1,5 @@
 import BlockCity from 'blockcity-js-sdk'
+import adaptArgsForBridge from './adaptArgsForBridge'
 
 class Bridge {
     promptSelectIdentity() {
@@ -15,6 +16,13 @@ class Bridge {
                     alert('取消：' + result)
                 }
             })
+        })
+    }
+
+    callContract() {
+        return new Promise(async (resolve, reject) => {
+            const adaptedArgs = await adaptArgsForBridge('callContract', arguments, resolve, reject)
+            BlockCity.callContract(adaptedArgs)
         })
     }
 }
