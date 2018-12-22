@@ -2,11 +2,9 @@ import * as methodNames from './needErrorHandleMethodName'
 import apiUniErrorHandler from './apiUniErroHandler'
 import { GXClient } from 'gxclient'
 import Bridge from './bridge'
-
-// TODO: 返回gxclient所需的地址
-function getWsAddress(network) {
-
-}
+import store from './store'
+import { getIdentity, getChainId } from './nativeService'
+import { WITNESS_MAP } from './const'
 
 // TODO: 是否是需要Bridge提供的方法
 function isBridgeProvideMethod(name) {
@@ -36,7 +34,7 @@ function getBridgeMethod(name) {
 }
 
 const gxc = function (network) {
-    const gxclient = new GXClient('', '', `${getWsAddress(network)}`)
+    const gxclient = new GXClient('', '', store.get('witness'))
     const gxclientProxy = new Proxy(gxclient, {
         get(target, name) {
             if (isBridgeProvideMethod(name)) {
@@ -63,7 +61,14 @@ class GScatter {
 
     init() {
         // 不建议调用getIdentity，因为如果用户没有授权过，一进入页面就会让用户去授权，这样体验可能不太好。正常情况是用户需要点击触发getIdentity
-        return new Promise(resolve => {
+        return new Promise(async (resolve) => {
+            const witness = await this._getWitness()
+            store.set('witness', witness)
+            const identity = await getIdentity()
+            alert(identity)
+            // const chainId = await getChainId()
+            // alert(chainId)
+
             resolve(true)
             // return this._getIdentityFromPermission()
         })
@@ -74,6 +79,11 @@ class GScatter {
         return Bridge.getIdentityFromPermission().then(identity => {
             this.useIdentity(identity)
         })
+    }
+
+    async _getWitness() {
+        const chainId = await getChainId()
+        return WITNESS_MAP[chainId]
     }
 
     // TODO:

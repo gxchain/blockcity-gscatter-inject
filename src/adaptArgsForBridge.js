@@ -1,4 +1,4 @@
-import { getAmountAssetByStr } from './service'
+import { getAmountAssetByStr } from './chainService'
 const adapterMap = {}
 
 adapterMap.callContract = async function (args, resolve, reject) {
