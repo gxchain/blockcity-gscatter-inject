@@ -12,51 +12,12 @@ function isBridgeProvideMethod(name) {
     return arr.includes(name)
 }
 
-// TODO: 获取Bridge提供的方法，如transfer、vote、callContract等
-function getBridgeMethod(name) {
-    return function (...args) {
-        // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
-        const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
-        return Bridge[name](...args).then(res => {
-            if (requiredFields) {
-                return {
-                    transaction: res,
-                    // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
-                    returnedFields: {}
-                }
-            } else {
-                return res
-            }
-        }).catch(err => {
-            throw apiUniErrorHandler(err, null, name)
-        })
-    }
-}
-
-const gxc = function (network) {
-    const gxclient = new GXClient('', '', store.get('witness'))
-    const gxclientProxy = new Proxy(gxclient, {
-        get(target, name) {
-            if (isBridgeProvideMethod(name)) {
-                // 必须是支持promise的
-                return getBridgeMethod(name)
-            }
-
-            // pc端目前的规范是所有接口promise化
-            return async function (...args) {
-                return target[name](...args)
-            }
-        }
-    })
-
-    return gxclientProxy
-}
-
 class GScatter {
     constructor() {
         this.isExtension = true
         this.identity = null
-        this.gxc = gxc
+        this.gxc = this._gxcGenerator
+        this._bridge = new Bridge(this)
     }
 
     init() {
@@ -65,9 +26,7 @@ class GScatter {
             const witness = await this._getWitness()
             store.set('witness', witness)
             const identity = await getIdentity()
-            alert(identity)
-            // const chainId = await getChainId()
-            // alert(chainId)
+            this.useIdentity(identity)
 
             resolve(true)
             // return this._getIdentityFromPermission()
@@ -146,6 +105,47 @@ class GScatter {
     // DONE 不用写
     authenticate() {
         return Promise.resolve('')
+    }
+
+    _gxcGenerator(network) {
+        const self = this
+        const gxclient = new GXClient('', '', store.get('witness'))
+        const gxclientProxy = new Proxy(gxclient, {
+            get(target, name) {
+                if (isBridgeProvideMethod(name)) {
+                    // 必须是支持promise的
+                    return self._getBridgeMethod(name)
+                }
+
+                // pc端目前的规范是所有接口promise化
+                return async function (...args) {
+                    return target[name](...args)
+                }
+            }
+        })
+
+        return gxclientProxy
+    }
+
+    // TODO: 获取Bridge提供的方法，如transfer、vote、callContract等
+    _getBridgeMethod(name) {
+        return (...args) => {
+            // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
+            const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
+            return this._bridge[name](...args).then(res => {
+                if (requiredFields) {
+                    return {
+                        transaction: res,
+                        // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
+                        returnedFields: {}
+                    }
+                } else {
+                    return res
+                }
+            }).catch(err => {
+                throw apiUniErrorHandler(err, null, name)
+            })
+        }
     }
 }
 

@@ -1,7 +1,11 @@
-import BlockCity from 'blockcity-js-sdk'
+import BlockCity from 'blockcity-js-sdk/index'
 import adaptArgsForBridge from './adaptArgsForBridge'
 
 class Bridge {
+    constructor(context) {
+        this.ctx = context
+    }
+
     promptSelectIdentity() {
         return new Promise((resolve, reject) => {
             BlockCity.callAuth({
@@ -22,9 +26,15 @@ class Bridge {
     callContract() {
         return new Promise(async (resolve, reject) => {
             const adaptedArgs = await adaptArgsForBridge('callContract', arguments, resolve, reject)
-            BlockCity.callContract(adaptedArgs)
+            BlockCity.callContract({
+                ...adaptedArgs,
+                extra: {
+                    ifJumpWalletSelect: true,
+                    account: this.ctx.identity
+                }
+            })
         })
     }
 }
 
-export default new Bridge()
+export default Bridge
