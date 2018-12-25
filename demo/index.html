@@ -20,6 +20,9 @@
     <button onclick="queryAccount()">Query Account By Name</button>
     <button onclick="getBalance()">Get Balance</button>
     <button onclick="checkExtension()">Check Extension</button>
+
+    <button onclick="getChainId()">getChainId</button>
+    <button onclick="getIdentity()">getIdentity</button>
     <script>
         const network = {
             blockchain: 'gxc',
@@ -79,7 +82,7 @@
 
         window.transfer = async () => {
             // if user don't have these requiredFields, the operation would be cancel, and go to catch area
-            gxc.transfer('youxiu123', 'memo info', '1 GXC', true).then(trx => {
+            gxc.transfer('jaredliu233', 'memo info', '1 GXC', true).then(trx => {
                 console.log(`transfer success`, trx);
             }).catch(error => {
                 if (error.code === 432) {
@@ -98,7 +101,7 @@
         }
 
         window.vote = () => {
-            gxc.vote(['math-wallet-test', 'gxc-pacific'], 'GXC', true).then(trx => {
+            gxc.vote(['init0', 'init2'], 'GXC', true).then(trx => {
                 console.log(`vote success`, trx);
             }).catch(error => {
                 console.error(error);
@@ -133,6 +136,16 @@
                     GScatterJS.openExtensionPage()
                 }
             }
+        }
+
+        window.getChainId = async () => {
+            const chainId = await gscatter.getChainId()
+            alert(chainId)
+        }
+
+        window.getIdentity = async () => {
+            const identity = await gscatter.getIdentity()
+            alert(identity)
         }
     </script>
     <script src="http://192.168.100.30:9999/dist/inject.js"></script>

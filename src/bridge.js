@@ -25,14 +25,22 @@ class Bridge {
 
     callContract() {
         return new Promise(async (resolve, reject) => {
-            const adaptedArgs = await adaptArgsForBridge('callContract', arguments, resolve, reject)
-            BlockCity.callContract({
-                ...adaptedArgs,
-                extra: {
-                    ifJumpWalletSelect: true,
-                    account: this.ctx.identity
-                }
-            })
+            const adaptedArgs = await adaptArgsForBridge('callContract', arguments, this.ctx, resolve, reject)
+            BlockCity.callContract(adaptedArgs)
+        })
+    }
+
+    transfer() {
+        return new Promise(async (resolve, reject) => {
+            const adaptedArgs = await adaptArgsForBridge('transfer', arguments, this.ctx, resolve, reject)
+            BlockCity.callContract(adaptedArgs)
+        })
+    }
+
+    vote() {
+        return new Promise(async (resolve, reject) => {
+            const adaptedArgs = await adaptArgsForBridge('vote', arguments, this.ctx, resolve, reject)
+            BlockCity.callContract(adaptedArgs)
         })
     }
 }

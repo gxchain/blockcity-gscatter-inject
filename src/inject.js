@@ -66,14 +66,12 @@ class GScatter {
         //     blockchain: "gxc",    // 默认gxc就行
         //     name: "youxiu123"    // 账户名
         // }
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             // 身份不存在，则弹出身份选择窗口，选择之后记录该身份，下次调用无需重复选择，直接返回
-            Bridge.promptSelectIdentity(requiredFields).then((identity) => {
-                this.useIdentity(identity)
-                resolve(identity)
-            }).catch(err => {
-                apiUniErrorHandler(err, reject, methodNames.GET_IDENTITY)
-            })
+            const identity = await getIdentity()
+            this.useIdentity(identity)
+            resolve(identity)
+            // apiUniErrorHandler(err, reject, methodNames.GET_IDENTITY)
         })
     }
 
@@ -105,6 +103,10 @@ class GScatter {
     // DONE 不用写
     authenticate() {
         return Promise.resolve('')
+    }
+
+    getChainId() {
+        return getChainId()
     }
 
     _gxcGenerator(network) {
