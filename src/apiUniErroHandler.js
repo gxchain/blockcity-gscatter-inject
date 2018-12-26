@@ -6,31 +6,16 @@ import Error from './Error'
 const map = {}
 
 map._default = function (err) {
-    return new Error(undefined, err.message)
-}
-
-map[methodNames.FORGET_IDENTITY] = function (err) {
-    return map._default(err)
-}
-
-map[methodNames.GET_IDENTITY] = function (err) {
-    // TODO: 若用户cancel，则抛出 NO_PERMISSION 错误，跟pc保持一致
-    if ('xxx') {
-        // TODO: 参数可以自己定，代表errorMsg
-        return Error.noPermissionError('xxx')
-    } else {
-        // 其它情况
-        return map._default(err)
-    }
+    return new Error(undefined, err.message || err.msg)
 }
 
 map[methodNames.TRANSFER] = map[methodNames.CALL_CONTRACT] = map[methodNames.VOTE] = function (err) {
-    // TODO: 若没有授权
-    if ('xxx') {
-        // TODO: 参数可以自己定，代表errorMsg
-        return Error.noPermissionError('xxx')
+    // 取消的情况
+    if (err.code === '0') {
+        return Error.rejectSignature()
+    } else if (err.code === '-1') {
+        return Error.passwordError()
     } else {
-        // 其它情况
         return map._default(err)
     }
 }
@@ -40,7 +25,16 @@ function createError(err, errName) {
 }
 
 export default function apiUniErrorHandler(err, reject, errName) {
-    const error = createError(err, errName)
+    let error
+    if (typeof err === 'string') {
+        err = JSON.parse(decodeURIComponent(err))
+    }
+    if (err && err.isError) {
+        error = err
+    } else {
+        error = createError(err, errName)
+    }
+
     if (reject) {
         reject(error)
     } else {

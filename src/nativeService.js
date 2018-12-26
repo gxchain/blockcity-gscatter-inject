@@ -49,7 +49,17 @@ function callBridge(method, params, callback) {
 export function getIdentity() {
     return new Promise(resolve => {
         callBridge('getIdentity', {}, (account) => {
-            resolve(account)
+            resolve(account ? {
+                'hash': '',
+                'publicKey': '',
+                'name': '',
+                'kyc': false,
+                'accounts': [{
+                    authority: 'active',
+                    blockchain: 'gxc',
+                    name: account
+                }]
+            } : null)
         })
     })
 }

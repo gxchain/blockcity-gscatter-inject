@@ -21,7 +21,6 @@
     <button onclick="getBalance()">Get Balance</button>
     <button onclick="checkExtension()">Check Extension</button>
 
-    <button onclick="getChainId()">getChainId</button>
     <button onclick="getIdentity()">getIdentity</button>
     <script>
         const network = {
@@ -82,7 +81,7 @@
 
         window.transfer = async () => {
             // if user don't have these requiredFields, the operation would be cancel, and go to catch area
-            gxc.transfer('jaredliu233', 'memo info', '1 GXC', true).then(trx => {
+            gxc.transfer('jaredliu233', 'memo info', '0 GXC', true).then(trx => {
                 console.log(`transfer success`, trx);
             }).catch(error => {
                 if (error.code === 432) {
@@ -138,17 +137,12 @@
             }
         }
 
-        window.getChainId = async () => {
-            const chainId = await gscatter.getChainId()
-            alert(chainId)
-        }
-
         window.getIdentity = async () => {
             const identity = await gscatter.getIdentity()
             alert(identity)
         }
     </script>
-    <!-- <script src="http://192.168.100.30:9999/dist/inject.js"></script> -->
+    <script src="http://192.168.100.30:9999/dev/inject.js"></script>
 </body>
 
 </html>

@@ -15,7 +15,7 @@ module.exports = {
         ]
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dev'),
         filename: 'inject.js'
     },
     devtool: 'source-map'

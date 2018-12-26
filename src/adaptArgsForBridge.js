@@ -16,6 +16,7 @@ adapterMap.callContract = async function (args, extra, resolve, reject) {
             alert('成功：' + result)
         },
         fail: function (result) {
+            reject(result)
             alert('失败：' + result)
         },
         cancel: function (result) {
@@ -23,7 +24,7 @@ adapterMap.callContract = async function (args, extra, resolve, reject) {
         },
         extra: {
             ifJumpWalletSelect: true,
-            account: extra.identity
+            account: extra.account
         }
     }
 
@@ -36,20 +37,20 @@ adapterMap.transfer = async function (args, extra, resolve, reject) {
 
     const ret = {
         ...makeFakeTransactionStruc('transfer', {
-            account: extra.identity,
+            account: extra.account,
             to,
             memo,
             amount,
             originalArgs: { amountStr }
         }),
         success: function (result) {
-            alert('成功：' + result)
+            resolve(result)
         },
         fail: function (result) {
-            alert('失败：' + result)
+            reject(result)
         },
         cancel: function (result) {
-            alert('取消：' + result)
+            reject(result)
         }
     }
 
@@ -61,7 +62,7 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
 
     const ret = {
         ...makeFakeTransactionStruc('vote', {
-            account: extra.identity,
+            account: extra.account,
             accounts,
             feeAssetSymbol
         }),
@@ -79,6 +80,6 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
     return ret
 }
 
-export default function (name, args, resolve, reject) {
-    return adapterMap[name](args, resolve, reject)
+export default function (name, args, ctx, resolve, reject) {
+    return adapterMap[name](args, ctx, resolve, reject)
 }

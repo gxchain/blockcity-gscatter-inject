@@ -1,3 +1,4 @@
+import Error from './Error'
 const fakeParams = {
     contractName: 'fake',
     amount: {
@@ -13,5 +14,11 @@ export function makeFakeTransactionStruc(type, data) {
         ...fakeParams,
         type,
         extra: data
+    }
+}
+
+export async function identityGuard(identity) {
+    if (!identity) {
+        throw Error.noPermissionError()
     }
 }
