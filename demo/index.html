@@ -39,6 +39,16 @@
 
         let gscatter, gxc;
 
+        function output(msg, extra) {
+            if (msg && msg.message) {
+                console.error(msg, extra)
+            } else {
+                console.log(msg, extra)
+            }
+
+            alert(msg, extra)
+        }
+
         function setAccountName(account) {
             accountNameElem.innerText = account.name + ', welcome!'
         }
@@ -66,7 +76,7 @@
 
         window.login = async () => {
             // required fields, it will appear at gscatter.identity
-            identity = await gscatter.getIdentity({ accounts: [network] })
+            const identity = await gscatter.getIdentity({ accounts: [network] })
         };
 
         window.logout = async () => {
@@ -75,54 +85,62 @@
                 clearAccountName()
             } catch (err) {
                 // no identity found
-                console.error(err)
+                output(err)
             }
         };
 
         window.transfer = async () => {
             // if user don't have these requiredFields, the operation would be cancel, and go to catch area
             gxc.transfer('jaredliu233', 'memo info', '0 GXC', true).then(trx => {
-                console.log(`transfer success`, trx);
+                output(`transfer success`, trx);
             }).catch(error => {
                 if (error.code === 432) {
                     alert('you don\'t authorize identity!')
+                } else {
+                    output(error);
                 }
-                console.error(error);
             });
         };
 
         window.contract = () => {
             gxc.callContract('bank', 'deposit', {}, '1 GXC', true).then(trx => {
-                console.log(`call contract success`, trx);
+                output(`call contract success`, trx);
             }).catch(error => {
-                console.error(error);
+                output(error);
             });
         }
 
         window.vote = () => {
             gxc.vote(['init0', 'init2'], 'GXC', true).then(trx => {
-                console.log(`vote success`, trx);
+                output(`vote success`, trx);
             }).catch(error => {
-                console.error(error);
+                output(error);
             });
         }
 
         window.generateKey = async () => {
             const key = await gxc.generateKey()
-            console.log(key)
+            output(key)
         }
 
         window.queryAccount = async () => {
-            const account = await gxc.getAccount('lzydophin94')
-            console.log(account)
+            let account
+            try {
+                account = await gxc.getAccount('jaredliu')
+            } catch (err) {
+                output(err)
+                return
+            }
+
+            output(account)
         }
 
         window.getBalance = () => {
             const account = gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
             gxc.getAccountBalances(account.name).then(res => {
-                console.log('balances:', res)
+                output(`balances:${res}`)
             }).catch(err => {
-                console.error(err)
+                output(err)
             })
         }
 

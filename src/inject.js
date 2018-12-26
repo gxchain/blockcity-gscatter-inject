@@ -4,6 +4,7 @@ import Bridge from './bridge'
 import store from './store'
 import { getIdentity, getChainId } from './nativeService'
 import { WITNESS_MAP } from './const'
+import Error from './Error'
 
 function isBridgeProvideMethod(name) {
     const arr = ['callContract', 'transfer', 'vote']
@@ -41,7 +42,7 @@ class GScatter {
 
     // 无法退出
     forgetIdentity() {
-        return Promise.resolve(true)
+        return Promise.reject(new Error(undefined, 'not support logout in blockcity'))
     }
 
     useIdentity(identity) {
@@ -78,7 +79,13 @@ class GScatter {
 
                 // pc端目前的规范是所有接口promise化
                 return async function (...args) {
-                    return target[name](...args)
+                    let ret
+                    try {
+                        ret = await target[name](...args)
+                    } catch (err) {
+                        throw new Error(undefined, err.message)
+                    }
+                    return ret
                 }
             }
         })
@@ -91,14 +98,25 @@ class GScatter {
             // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
             const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
             return this._bridge[name](...args).then(res => {
+                try {
+                    res = JSON.parse(decodeURIComponent(res))
+                } catch (err) { }
+
+                const trxObj = {
+                    block_num: res.data.block_num,
+                    id: res.data.trx_id,
+                    trx_num: 0,
+                    trx: {}
+                }
+
                 if (requiredFields) {
                     return {
-                        transaction: res,
+                        transaction: trxObj,
                         // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
                         returnedFields: {}
                     }
                 } else {
-                    return res
+                    return trxObj
                 }
             }).catch(err => {
                 throw apiUniErrorHandler(err, null, name)

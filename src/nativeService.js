@@ -7,7 +7,14 @@ var methodID = 0
 const nativeCallbackFromBlockcity = window.nativeCallback
 window.nativeCallback = function (mId) {
     var args = Array.prototype.slice.call(arguments, 1)
-    typeof methods[mId] === 'function' && methods[mId].apply(this, args)
+    const handledArgs = args.map(arg => {
+        try {
+            return JSON.parse(decodeURIComponent(arg))
+        } catch (err) {
+            return arg
+        }
+    })
+    typeof methods[mId] === 'function' && methods[mId].apply(this, handledArgs)
 
     nativeCallbackFromBlockcity(mId, ...args)
 }

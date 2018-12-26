@@ -13,14 +13,13 @@ adapterMap.callContract = async function (args, extra, resolve, reject) {
         methodParams: params,
         amount,
         success: function (result) {
-            alert('成功：' + result)
+            resolve(result)
         },
         fail: function (result) {
             reject(result)
-            alert('失败：' + result)
         },
         cancel: function (result) {
-            alert('取消：' + result)
+            reject(result)
         },
         extra: {
             ifJumpWalletSelect: true,
@@ -67,13 +66,13 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
             feeAssetSymbol
         }),
         success: function (result) {
-            alert('成功：' + result)
+            resolve(result)
         },
         fail: function (result) {
-            alert('失败：' + result)
+            reject(result)
         },
         cancel: function (result) {
-            alert('取消：' + result)
+            reject(result)
         }
     }
 
