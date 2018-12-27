@@ -19,6 +19,6 @@ export function makeFakeTransactionStruc(type, data) {
 
 export async function identityGuard(identity) {
     if (!identity) {
-        throw Error.noPermissionError()
+        throw Error.noIdentityError()
     }
 }

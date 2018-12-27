@@ -2,9 +2,9 @@ import * as ErrorTypes from './ErrorTypes'
 
 export const ErrorCodes = {
     NO_SIGNATURE: 402,
-    NO_PERMISSION: 432,
     UN_DEF_ERROR: 433,
-    PASSWORD_ERROR: 434
+    PASSWORD_ERROR: 434,
+    NO_IDENTITY: 435
 }
 
 export default class Error {
@@ -15,7 +15,7 @@ export default class Error {
         this.isError = true
     }
 
-    static signatureError(_type, _message) {
+    static signatureError (_type = ErrorTypes.NO_SIGNATURE, _message) {
         return new Error(_type, _message, ErrorCodes.NO_SIGNATURE)
     }
 
@@ -23,11 +23,11 @@ export default class Error {
         return Error.signatureError('signature_rejected', 'User rejected the signature request')
     }
 
-    static noPermissionError(msg = 'Haven\'t authorize yet') {
+    static noIdentityError(msg = 'no identity found') {
         return new Error(
-            ErrorTypes.NO_PERMISSION,
+            ErrorTypes.NO_IDENTITY,
             msg,
-            ErrorCodes.NO_PERMISSION
+            ErrorCodes.NO_IDENTITY
         )
     }
 
