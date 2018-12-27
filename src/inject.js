@@ -5,6 +5,7 @@ import store from './store'
 import { getIdentity, getChainId } from './nativeService'
 import { WITNESS_MAP } from './const'
 import Error from './Error'
+import { noIdentityHandle } from './util'
 
 function isBridgeProvideMethod(name) {
     const arr = ['callContract', 'transfer', 'vote']
@@ -36,6 +37,7 @@ class GScatter {
         return new Promise(async (resolve, reject) => {
             const identity = await getIdentity()
             this.useIdentity(identity)
+            noIdentityHandle()
             resolve(identity)
         })
     }

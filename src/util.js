@@ -17,8 +17,13 @@ export function makeFakeTransactionStruc(type, data) {
     }
 }
 
+export function noIdentityHandle() {
+    alert('没有账户，请在公信链钱包中导入!(临时交互)')
+}
+
 export async function identityGuard(identity) {
     if (!identity) {
+        noIdentityHandle()
         throw Error.noIdentityError()
     }
 }
