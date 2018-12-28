@@ -1,16 +1,16 @@
 import BlockCity from 'blockcity-js-sdk/index'
 import adaptArgsForBridge from './adaptArgsForBridge'
-import { identityGuard } from './util'
+import Error from './Error'
 
 class Bridge {
-    constructor(context) {
+    constructor(context = {}) {
         this.ctx = context
     }
 
     callContract() {
         return new Promise(async (resolve, reject) => {
             try {
-                await identityGuard(this.ctx.identity)
+                await this._identityGuard(this.ctx.identity)
             } catch (err) {
                 reject(err)
                 return
@@ -23,7 +23,7 @@ class Bridge {
     transfer() {
         return new Promise(async (resolve, reject) => {
             try {
-                await identityGuard(this.ctx.identity)
+                await this._identityGuard(this.ctx.identity)
             } catch (err) {
                 reject(err)
                 return
@@ -36,13 +36,26 @@ class Bridge {
     vote() {
         return new Promise(async (resolve, reject) => {
             try {
-                await identityGuard(this.ctx.identity)
+                await this._identityGuard(this.ctx.identity)
             } catch (err) {
                 reject(err)
                 return
             }
-            await identityGuard(this.ctx.identity)
             const adaptedArgs = await adaptArgsForBridge('vote', arguments, this.ctx, resolve, reject)
+            BlockCity.callContract(adaptedArgs)
+        })
+    }
+
+    async _identityGuard(identity) {
+        if (!identity) {
+            await this._noIdentity()
+            throw Error.noIdentityError()
+        }
+    }
+
+    _noIdentity() {
+        return new Promise(async (resolve, reject) => {
+            const adaptedArgs = await adaptArgsForBridge('_noIdentity', arguments, this.ctx, resolve, reject)
             BlockCity.callContract(adaptedArgs)
         })
     }

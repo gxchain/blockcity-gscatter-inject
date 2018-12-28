@@ -5,7 +5,6 @@ import store from './store'
 import { getIdentity, getChainId } from './nativeService'
 import { WITNESS_MAP } from './const'
 import Error from './Error'
-import { noIdentityHandle } from './util'
 
 function isBridgeProvideMethod(name) {
     const arr = ['callContract', 'transfer', 'vote']
@@ -38,7 +37,7 @@ class GScatter {
             const identity = await getIdentity()
             this.useIdentity(identity)
             if (!identity) {
-                noIdentityHandle()
+                await this._noIdentityHandle()
             }
             resolve(identity)
         })
@@ -69,6 +68,10 @@ class GScatter {
     async _getWitness() {
         const chainId = await getChainId()
         return WITNESS_MAP[chainId]
+    }
+
+    async _noIdentityHandle() {
+        await this._bridge._noIdentity()
     }
 
     _gxcGenerator(network) {
@@ -123,6 +126,7 @@ class GScatter {
                     return trxObj
                 }
             }).catch(err => {
+                // 安卓会把除了code,msg,data之外的字段移除
                 throw apiUniErrorHandler(err, null, name)
             })
         }

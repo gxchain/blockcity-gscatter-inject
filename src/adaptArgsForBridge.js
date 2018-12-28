@@ -79,6 +79,23 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
     return ret
 }
 
+adapterMap._noIdentity = async function (args, extra, resolve, reject) {
+    const ret = {
+        ...makeFakeTransactionStruc('noidentity'),
+        success: function (result) {
+            resolve(true)
+        },
+        fail: function (result) {
+            resolve(true)
+        },
+        cancel: function (result) {
+            resolve(true)
+        }
+    }
+
+    return ret
+}
+
 export default function (name, args, ctx, resolve, reject) {
     return adapterMap[name](args, ctx, resolve, reject)
 }
