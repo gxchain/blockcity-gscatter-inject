@@ -39,14 +39,18 @@
 
         let gscatter, gxc;
 
-        function output(msg, extra) {
-            if (msg && msg.message) {
-                console.error(msg, extra)
-            } else {
-                console.log(msg, extra)
-            }
+        function output() {
+            const combined = Array.from(arguments).map(arg => {
+                if (typeof arg === 'object') {
+                    return JSON.stringify(arg)
+                } else {
+                    return arg
+                }
+            })
 
-            alert(msg, extra)
+            console.log(...arguments)
+
+            alert(combined.join('\n--------------\n'))
         }
 
         function setAccountName(account) {
@@ -77,6 +81,7 @@
         window.login = async () => {
             // required fields, it will appear at gscatter.identity
             const identity = await gscatter.getIdentity({ accounts: [network] })
+            output(identity)
         };
 
         window.logout = async () => {
@@ -94,11 +99,7 @@
             gxc.transfer('jaredliu233', 'memo info', '0 GXC', true).then(trx => {
                 output(`transfer success`, trx);
             }).catch(error => {
-                if (error.code === 432) {
-                    alert('you don\'t authorize identity!')
-                } else {
-                    output(error);
-                }
+                output(error);
             });
         };
 

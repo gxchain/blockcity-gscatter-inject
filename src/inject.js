@@ -37,7 +37,9 @@ class GScatter {
         return new Promise(async (resolve, reject) => {
             const identity = await getIdentity()
             this.useIdentity(identity)
-            noIdentityHandle()
+            if (!identity) {
+                noIdentityHandle()
+            }
             resolve(identity)
         })
     }
