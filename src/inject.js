@@ -13,6 +13,7 @@ function isBridgeProvideMethod(name) {
 
 class GScatter {
     constructor() {
+        this.host = 'blockcity'
         this.isExtension = true
         this.identity = null
         this.account = null

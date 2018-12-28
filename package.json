@@ -31,6 +31,6 @@
   "dependencies": {
     "blockcity-js-sdk": "^1.2.0",
     "gxc-frontend-base": "^0.1.0",
-    "gxclient": "^1.5.7"
+    "gxclient": "^1.5.8"
   }
 }
