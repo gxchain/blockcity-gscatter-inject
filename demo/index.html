@@ -139,7 +139,7 @@
         window.getBalance = () => {
             const account = gscatter.identity.accounts.find(x => x.blockchain === 'gxc');
             gxc.getAccountBalances(account.name).then(res => {
-                output(`balances:${res}`)
+                output(`balances`, res)
             }).catch(err => {
                 output(err)
             })
