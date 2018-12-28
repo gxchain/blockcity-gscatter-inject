@@ -12,9 +12,9 @@ map._default = function (err) {
 // 安卓会把除了code,msg,data之外的字段移除，所以为了保持前端error结构一致，需要重新处理一下
 map[methodNames.TRANSFER] = map[methodNames.CALL_CONTRACT] = map[methodNames.VOTE] = function (err) {
     // 取消的情况
-    if (err.code === ErrorCodes.NO_SIGNATURE) {
+    if (+err.code === ErrorCodes.NO_SIGNATURE) {
         return Error.rejectSignature()
-    } else if (err.code === ErrorCodes.PASSWORD_ERROR) {
+    } else if (+err.code === ErrorCodes.PASSWORD_ERROR) {
         return Error.passwordError()
     } else {
         return map._default(err)
