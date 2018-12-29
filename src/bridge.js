@@ -1,4 +1,4 @@
-import BlockCity from 'blockcity-js-sdk/index'
+import BlockCity from 'blockcity-js-sdk'
 import adaptArgsForBridge from './adaptArgsForBridge'
 import Error from './Error'
 
