@@ -4,7 +4,6 @@
 const methods = {}
 var methodID = 0
 
-const nativeCallbackFromBlockcity = window.nativeCallback
 window.nativeCallback = function (mId) {
     var args = Array.prototype.slice.call(arguments, 1)
     const handledArgs = args.map(arg => {
@@ -15,8 +14,6 @@ window.nativeCallback = function (mId) {
         }
     })
     typeof methods[mId] === 'function' && methods[mId].apply(this, handledArgs)
-
-    nativeCallbackFromBlockcity(mId, ...args)
 }
 
 function callBridge(method, params, callback) {
@@ -51,6 +48,39 @@ function callBridge(method, params, callback) {
     document.body.appendChild(iFrame)
     iFrame.parentNode.removeChild(iFrame)
     iFrame = null
+}
+
+export function callContract({ contractName = '', methodName = '', methodParams = {}, type, extra, amount = {}, success, fail, cancel }) {
+    methodParams = JSON.stringify(methodParams);
+    amount = JSON.stringify(amount);
+
+    const params = {
+        contract_name: contractName,
+        amount: amount,
+        method_name: methodName,
+        params: methodParams
+    }
+
+    if (!!type) {
+        params.type = type;
+    }
+
+    if (!!extra) {
+        params.extra = JSON.stringify(extra);
+    }
+
+    callBridge('callContract', params, function (result) {
+        switch (parseInt(result.code)) {
+            case 0:
+                cancel && cancel(result);
+                break;
+            case 1:
+                success && success(result);
+                break;
+            default:
+                fail && fail(result);
+        }
+    });
 }
 
 export function getIdentity() {

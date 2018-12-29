@@ -1,4 +1,4 @@
-import BlockCity from 'blockcity-js-sdk'
+import {callContract} from './nativeService'
 import adaptArgsForBridge from './adaptArgsForBridge'
 import Error from './Error'
 
@@ -16,7 +16,7 @@ class Bridge {
                 return
             }
             const adaptedArgs = await adaptArgsForBridge('callContract', arguments, this.ctx, resolve, reject)
-            BlockCity.callContract(adaptedArgs)
+            callContract(adaptedArgs)
         })
     }
 
@@ -29,7 +29,7 @@ class Bridge {
                 return
             }
             const adaptedArgs = await adaptArgsForBridge('transfer', arguments, this.ctx, resolve, reject)
-            BlockCity.callContract(adaptedArgs)
+            callContract(adaptedArgs)
         })
     }
 
@@ -42,7 +42,7 @@ class Bridge {
                 return
             }
             const adaptedArgs = await adaptArgsForBridge('vote', arguments, this.ctx, resolve, reject)
-            BlockCity.callContract(adaptedArgs)
+            callContract(adaptedArgs)
         })
     }
 
@@ -56,7 +56,7 @@ class Bridge {
     _noIdentity() {
         return new Promise(async (resolve, reject) => {
             const adaptedArgs = await adaptArgsForBridge('_noIdentity', arguments, this.ctx, resolve, reject)
-            BlockCity.callContract(adaptedArgs)
+            callContract(adaptedArgs)
         })
     }
 }
