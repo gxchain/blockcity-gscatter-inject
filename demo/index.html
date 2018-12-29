@@ -96,7 +96,7 @@
 
         window.transfer = async () => {
             // if user don't have these requiredFields, the operation would be cancel, and go to catch area
-            gxc.transfer('jaredliu233', 'memo info', '1 GXC', true).then(trx => {
+            gxc.transfer('lzydophin94', 'memo info', '1 GXC', true).then(trx => {
                 output(`transfer success`, trx);
             }).catch(error => {
                 output(error);
@@ -127,7 +127,7 @@
         window.queryAccount = async () => {
             let account
             try {
-                account = await gxc.getAccount('jaredliu')
+                account = await gxc.getAccount('lzydophin94')
             } catch (err) {
                 output(err)
                 return
