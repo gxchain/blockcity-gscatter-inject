@@ -30,7 +30,7 @@ export default function apiUniErrorHandler(err, reject, errName) {
     if (typeof err === 'string') {
         err = JSON.parse(decodeURIComponent(err))
     }
-    if (err && err.isError) {
+    if (err && (err.isError === true)) {
         error = err
     } else {
         error = createError(err, errName)

@@ -10,7 +10,7 @@ window.nativeCallback = function (mId) {
         try {
             return JSON.parse(decodeURIComponent(arg))
         } catch (err) {
-            return arg
+            return decodeURIComponent(arg)
         }
     })
     typeof methods[mId] === 'function' && methods[mId].apply(this, handledArgs)
@@ -51,8 +51,8 @@ function callBridge(method, params, callback) {
 }
 
 export function callContract({ contractName = '', methodName = '', methodParams = {}, type, extra, amount = {}, success, fail, cancel }) {
-    methodParams = JSON.stringify(methodParams);
-    amount = JSON.stringify(amount);
+    methodParams = JSON.stringify(methodParams)
+    amount = JSON.stringify(amount)
 
     const params = {
         contract_name: contractName,
@@ -62,25 +62,25 @@ export function callContract({ contractName = '', methodName = '', methodParams 
     }
 
     if (!!type) {
-        params.type = type;
+        params.type = type
     }
 
     if (!!extra) {
-        params.extra = JSON.stringify(extra);
+        params.extra = JSON.stringify(extra)
     }
 
     callBridge('callContract', params, function (result) {
         switch (parseInt(result.code)) {
             case 0:
-                cancel && cancel(result);
+                cancel && cancel(result)
                 break;
             case 1:
-                success && success(result);
+                success && success(result)
                 break;
             default:
-                fail && fail(result);
+                fail && fail(result)
         }
-    });
+    })
 }
 
 export function getIdentity() {
