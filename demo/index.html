@@ -39,19 +39,22 @@
         let gscatter
         let gxc
         let testData
-        const env = 'test'
+        const env = 'prod'
 
         if (env === 'dev') {
             testData = {
-                account1: 'jaredliu'
+                account1: 'jaredliu',
+                callContractParams: ['bank', 'deposit', {}, '1 GXC', true]
             }
         } else if (env === 'test') {
             testData = {
-                account1: 'lzydophin94'
+                account1: 'lzydophin94',
+                callContractParams: ['bank', 'deposit', {}, '1 GXC', true]
             }
         } else { // 线上
             testData = {
-                account1: 'jaime94'
+                account1: 'jaime94',
+                callContractParams: ['book', 'hi', {}, 0, true]
             }
         }
 
@@ -120,7 +123,7 @@
         }
 
         window.contract = () => {
-            gxc.callContract('bank', 'deposit', {}, '1 GXC', true).then(trx => {
+            gxc.callContract.apply(gxc, testData.callContractParams).then(trx => {
                 output(`call contract success`, trx)
             }).catch(error => {
                 output(error)
