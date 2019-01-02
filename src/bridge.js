@@ -1,4 +1,4 @@
-import {callContract} from './nativeService'
+import { callContract } from './nativeService'
 import adaptArgsForBridge from './adaptArgsForBridge'
 import Error from './Error'
 
