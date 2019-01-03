@@ -39,7 +39,7 @@
         let gscatter
         let gxc
         let testData
-        const url = new URL(location.href)
+        var url = new URL(location.href)
         const env = url.searchParams.get('env') || 'test'
 
         if (env === 'dev') {
@@ -175,7 +175,7 @@
         }
     </script>
     <script>
-        const url = new URL(location.href)
+        var url = new URL(location.href)
         const isRej = +url.searchParams.get('rejScatter')
         if (isRej === 1) {
             // ?rejScatter=1
