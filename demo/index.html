@@ -39,7 +39,8 @@
         let gscatter
         let gxc
         let testData
-        const env = 'prod'
+        const url = new URL(location.href)
+        const env = url.searchParams.get('env') || 'test'
 
         if (env === 'dev') {
             testData = {
