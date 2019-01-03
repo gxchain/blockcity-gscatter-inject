@@ -157,7 +157,7 @@
         }
 
         window.getBalance = () => {
-            const account = gscatter.identity.accounts.find(x => x.blockchain === 'gxc')
+            const account = gscatter.identity && gscatter.identity.accounts.find(x => x.blockchain === 'gxc')
             if (!account) {
                 alert('没有钱包，请导入')
             } else {
