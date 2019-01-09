@@ -1,5 +1,5 @@
 import apiUniErrorHandler from './apiUniErroHandler'
-import { GXClient } from 'gxclient'
+import { GXClientFactory } from 'gxclient'
 import Bridge from './bridge'
 import store from './store'
 import { getIdentity, getChainId } from './nativeService'
@@ -77,7 +77,10 @@ class GScatter {
 
     _gxcGenerator(network) {
         const self = this
-        const gxclient = new GXClient('', '', store.get('witness'))
+        const gxclient = GXClientFactory.instance({
+            account: '',
+            network: store.get('witness')
+        })
         const gxclientProxy = new Proxy(gxclient, {
             get(target, name) {
                 if (isBridgeProvideMethod(name)) {
