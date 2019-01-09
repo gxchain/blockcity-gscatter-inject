@@ -1,5 +1,5 @@
 import apiUniErrorHandler from './apiUniErroHandler'
-import { GXClientFactory } from 'gxclient'
+import GXClientFactory from 'gxclient'
 import Bridge from './bridge'
 import store from './store'
 import { getIdentity, getChainId } from './nativeService'
