@@ -5,6 +5,7 @@ import store from './store'
 import { getIdentity, getChainId } from './nativeService'
 import { WITNESS_MAP } from './const'
 import Error from './Error'
+import taskQueue from './taskQueue'
 
 function isBridgeProvideMethod(name) {
     const arr = ['callContract', 'transfer', 'vote']
@@ -106,32 +107,44 @@ class GScatter {
 
     _getBridgeMethod(name) {
         return (...args) => {
-            // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
-            const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
-            return this._bridge[name](...args).then(res => {
-                try {
-                    res = JSON.parse(decodeURIComponent(res))
-                } catch (err) { }
+            return new Promise((resolve, reject) => {
+                const callback = (...args) => {
+                    // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
+                    const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
 
-                const trxObj = {
-                    block_num: res.data.block_num,
-                    id: res.data.trx_id,
-                    trx_num: 0,
-                    trx: {}
+                    return this._bridge[name](...args).then(res => {
+                        try {
+                            res = JSON.parse(decodeURIComponent(res))
+                        } catch (err) { }
+
+                        const trxObj = {
+                            block_num: res.data.block_num,
+                            id: res.data.trx_id,
+                            trx_num: 0,
+                            trx: {}
+                        }
+
+                        if (requiredFields) {
+                            return {
+                                transaction: trxObj,
+                                // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
+                                returnedFields: {}
+                            }
+                        } else {
+                            return trxObj
+                        }
+                    }).catch(err => {
+                        // 安卓会把除了code,msg,data之外的字段移除
+                        throw apiUniErrorHandler(err, null, name)
+                    })
                 }
 
-                if (requiredFields) {
-                    return {
-                        transaction: trxObj,
-                        // TODO: 如果支持的话可以构造这个对象，不支持默认这样填就好了，这样开发者那边不会报错
-                        returnedFields: {}
-                    }
-                } else {
-                    return trxObj
-                }
-            }).catch(err => {
-                // 安卓会把除了code,msg,data之外的字段移除
-                throw apiUniErrorHandler(err, null, name)
+                taskQueue.push({
+                    callback,
+                    args,
+                    resolve,
+                    reject
+                })
             })
         }
     }
