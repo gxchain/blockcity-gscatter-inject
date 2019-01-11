@@ -2,8 +2,9 @@
  * copy from blockcity
  */
 const methods = {}
-var methodID = 0
+let methodID = 99999
 
+const nativeCallback = window.nativeCallback || function () { }
 window.nativeCallback = function (mId) {
     var args = Array.prototype.slice.call(arguments, 1)
     const handledArgs = args.map(arg => {
@@ -14,6 +15,8 @@ window.nativeCallback = function (mId) {
         }
     })
     typeof methods[mId] === 'function' && methods[mId].apply(this, handledArgs)
+
+    nativeCallback(...arguments)
 }
 
 function callBridge(method, params, callback) {
@@ -73,10 +76,10 @@ export function callContract({ contractName = '', methodName = '', methodParams 
         switch (parseInt(result.code)) {
             case 0:
                 cancel && cancel(result)
-                break;
+                break
             case 1:
                 success && success(result)
-                break;
+                break
             default:
                 fail && fail(result)
         }
