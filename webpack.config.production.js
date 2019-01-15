@@ -1,5 +1,5 @@
 const path = require('path')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
@@ -22,14 +22,14 @@ module.exports = {
     // plugins: [new BundleAnalyzerPlugin()],
     optimization: {
         minimizer: [
-          // we specify a custom UglifyJsPlugin here to get source maps in production
-          new TerserPlugin({
-            terserOptions: {
-              output: {
-                comments: false,
-              },
-            },
-          }),
+            // we specify a custom UglifyJsPlugin here to get source maps in production
+            new TerserPlugin({
+                terserOptions: {
+                    output: {
+                        comments: false
+                    }
+                }
+            })
         ]
-      }
+    }
 }

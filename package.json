@@ -30,7 +30,6 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "blockcity-js-sdk": "^1.2.0",
     "gxc-frontend-base": "^0.1.0",
     "gxclient": "^1.5.8"
   }
