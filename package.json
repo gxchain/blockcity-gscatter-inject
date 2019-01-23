@@ -1,6 +1,6 @@
 {
   "name": "blockcity-gscatter-inject",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "gscatter blockcity",
   "main": "Error.js",
   "scripts": {

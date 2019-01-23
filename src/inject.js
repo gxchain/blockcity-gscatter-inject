@@ -45,10 +45,7 @@ class GScatter {
         })
     }
 
-    // 无法退出
-    forgetIdentity() {
-        return Promise.reject(new Error(undefined, 'not support logout in blockcity'))
-    }
+    forgetIdentity() {}
 
     useIdentity(identity) {
         this.identity = identity
