@@ -31,6 +31,6 @@
   },
   "dependencies": {
     "gxc-frontend-base": "^0.1.0",
-    "gxclient": "^1.5.8"
+    "gxclient": "^2.0.6"
   }
 }
