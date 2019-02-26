@@ -670,6 +670,14 @@ babel-plugin-transform-strict-mode@^6.24.1:
     babel-runtime "^6.22.0"
     babel-types "^6.24.1"
 
+babel-polyfill@^6.26.0:
+  version "6.26.0"
+  resolved "https://registry.yarnpkg.com/babel-polyfill/-/babel-polyfill-6.26.0.tgz#379937abc67d7895970adc621f284cd966cf2153"
+  dependencies:
+    babel-runtime "^6.26.0"
+    core-js "^2.5.0"
+    regenerator-runtime "^0.10.5"
+
 babel-preset-es2015@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-preset-es2015/-/babel-preset-es2015-6.24.1.tgz#d44050d6bc2c9feea702aaf38d727a0210538939"
@@ -1782,10 +1790,11 @@ gxbjs@^1.3.11:
     secp256k1 "^3.3.0"
     secure-random "^1.1.1"
 
-gxbjs@^1.3.16:
-  version "1.3.19"
-  resolved "https://registry.yarnpkg.com/gxbjs/-/gxbjs-1.3.19.tgz#2addd77132a47693bd96ff2be58977b1a84329ec"
+gxbjs@^1.3.20:
+  version "1.3.20"
+  resolved "https://registry.yarnpkg.com/gxbjs/-/gxbjs-1.3.20.tgz#876a85adc2ce576fd7dbd0ea1dec903556618124"
   dependencies:
+    babel-polyfill "^6.26.0"
     bigi "^1.4.1"
     bs58 "^3.0.0"
     bytebuffer "^5.0.0"
@@ -1808,15 +1817,15 @@ gxc-frontend-base@^0.1.0:
     gxbjs "^1.3.11"
     lodash "^4.17.10"
 
-gxclient@^2.0.7:
-  version "2.0.7"
-  resolved "https://registry.yarnpkg.com/gxclient/-/gxclient-2.0.7.tgz#154a40be26f247ec4cd93f81812bb955d0180af4"
+gxclient@^2.0.9:
+  version "2.0.9"
+  resolved "https://registry.yarnpkg.com/gxclient/-/gxclient-2.0.9.tgz#45b3e021b84ba45f08d9b4b1d217856a1bb87cd8"
   dependencies:
     axios "^0.18.0"
     chalk "^2.4.1"
     commander "^2.17.1"
     debug "^3.1.0"
-    gxbjs "^1.3.16"
+    gxbjs "^1.3.20"
     lodash "^4.17.11"
 
 gzip-size@^5.0.0:
@@ -2887,6 +2896,10 @@ readdirp@^2.0.0:
 regenerate@^1.2.1:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
+
+regenerator-runtime@^0.10.5:
+  version "0.10.5"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.10.5.tgz#336c3efc1220adcedda2c9fab67b5a7955a33658"
 
 regenerator-runtime@^0.11.0:
   version "0.11.1"

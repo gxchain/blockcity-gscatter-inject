@@ -147,9 +147,10 @@ class GScatter {
     }
 }
 
-window.gscatter = new GScatter()
+const gscatter = new GScatter()
 
 // init会去获取identity和chainId
-window.gscatter.init().then(() => {
+gscatter.init().then(() => {
+    window.gscatter = gscatter
     document.dispatchEvent(new CustomEvent('gscatterLoaded'))
 })

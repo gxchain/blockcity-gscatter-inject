@@ -1,6 +1,6 @@
 {
   "name": "blockcity-gscatter-inject",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "gscatter blockcity",
   "main": "Error.js",
   "scripts": {
@@ -32,6 +32,6 @@
   },
   "dependencies": {
     "gxc-frontend-base": "^0.1.0",
-    "gxclient": "^2.0.7"
+    "gxclient": "^2.0.9"
   }
 }
