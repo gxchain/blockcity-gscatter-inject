@@ -831,6 +831,16 @@ bindings@^1.2.1:
   dependencies:
     file-uri-to-path "1.0.0"
 
+bip39@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/bip39/-/bip39-2.5.0.tgz#51cbd5179460504a63ea3c000db3f787ca051235"
+  dependencies:
+    create-hash "^1.1.0"
+    pbkdf2 "^3.0.9"
+    randombytes "^2.0.1"
+    safe-buffer "^5.0.1"
+    unorm "^1.3.3"
+
 bip66@^1.1.3:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/bip66/-/bip66-1.1.5.tgz#01fa8748785ca70955d5011217d1b3139969ca22"
@@ -1805,6 +1815,25 @@ gxbjs@^1.3.21:
     secp256k1 "^3.3.0"
     secure-random "^1.1.1"
 
+gxbjs@^1.3.23:
+  version "1.3.23"
+  resolved "https://registry.yarnpkg.com/gxbjs/-/gxbjs-1.3.23.tgz#dbcd867f0803f7b5c53673e497b30aca67312dd8"
+  dependencies:
+    babel-runtime "^6.26.0"
+    bigi "^1.4.1"
+    bs58 "^3.0.0"
+    bytebuffer "^5.0.0"
+    create-hash "^1.1.2"
+    create-hmac "^1.1.4"
+    crypto-js "^3.1.9-1"
+    deep-equal "^1.0.1"
+    ecurve "^1.0.2"
+    event-emitter "^0.3.4"
+    gxbjs-ws "^1.2.0"
+    immutable "^3.7.6"
+    secp256k1 "^3.3.0"
+    secure-random "^1.1.1"
+
 gxc-frontend-base@^0.1.5:
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/gxc-frontend-base/-/gxc-frontend-base-0.1.5.tgz#47c05e8fb0507c61355aebf1cb1c8e171bda3a87"
@@ -1813,15 +1842,16 @@ gxc-frontend-base@^0.1.5:
     gxbjs "^1.3.21"
     lodash "^4.17.10"
 
-gxclient@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/gxclient/-/gxclient-2.1.0.tgz#f78000f72862246c5ce1b27010b2ec103e074f22"
+gxclient@^2.1.3:
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/gxclient/-/gxclient-2.1.3.tgz#dbc5d591b9e7e0405e286cd92e1f01575bcf7c02"
   dependencies:
     axios "^0.18.0"
+    bip39 "^2.5.0"
     chalk "^2.4.1"
     commander "^2.17.1"
     debug "^3.1.0"
-    gxbjs "^1.3.21"
+    gxbjs "^1.3.23"
     lodash "^4.17.11"
 
 gzip-size@^5.0.0:
@@ -2722,7 +2752,7 @@ path-to-regexp@0.1.7:
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/path-to-regexp/-/path-to-regexp-0.1.7.tgz#df604178005f522f15eb4490e7247a1bfaa67f8c"
 
-pbkdf2@^3.0.3:
+pbkdf2@^3.0.3, pbkdf2@^3.0.9:
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/pbkdf2/-/pbkdf2-3.0.17.tgz#976c206530617b14ebb32114239f7b09336e93a6"
   dependencies:
@@ -3465,6 +3495,10 @@ unique-slug@^2.0.0:
   resolved "https://registry.yarnpkg.com/unique-slug/-/unique-slug-2.0.1.tgz#5e9edc6d1ce8fb264db18a507ef9bd8544451ca6"
   dependencies:
     imurmurhash "^0.1.4"
+
+unorm@^1.3.3:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/unorm/-/unorm-1.5.0.tgz#01fa9b76f1c60f7916834605c032aa8962c3f00a"
 
 unpipe@1.0.0, unpipe@~1.0.0:
   version "1.0.0"
