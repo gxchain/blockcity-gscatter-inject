@@ -53,15 +53,17 @@ function callBridge(method, params, callback) {
     iFrame = null
 }
 
-export function callContract({ contractName = '', methodName = '', methodParams = {}, type, extra, amount = {}, success, fail, cancel }) {
+export function callContract({ contractName = '', methodName = '', methodParams = {}, type, extra, amount = {}, options = {}, success, fail, cancel }) {
     methodParams = JSON.stringify(methodParams)
     amount = JSON.stringify(amount)
+    options = JSON.stringify(options)
 
     const params = {
         contract_name: contractName,
         amount: amount,
         method_name: methodName,
-        params: methodParams
+        params: methodParams,
+        options
     }
 
     if (!!type) {

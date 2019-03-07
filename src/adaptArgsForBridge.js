@@ -3,7 +3,7 @@ import { makeFakeTransactionStruc } from './util'
 const adapterMap = {}
 
 adapterMap.callContract = async function (args, extra, resolve, reject) {
-    const [contractName, methodName, params, amountStr, broadcast] = args
+    const [contractName, methodName, params, amountStr, broadcast, options = {}] = args
     const amount = await getAmountAssetByStr(amountStr)
 
     const ret = {
@@ -12,6 +12,7 @@ adapterMap.callContract = async function (args, extra, resolve, reject) {
         methodName,
         methodParams: params,
         amount,
+        options,
         success: function (result) {
             resolve(result)
         },
@@ -31,7 +32,7 @@ adapterMap.callContract = async function (args, extra, resolve, reject) {
 }
 
 adapterMap.transfer = async function (args, extra, resolve, reject) {
-    const [to, memo, amountStr, broadcast] = args
+    const [to, memo, amountStr, broadcast, options = {}] = args
     const amount = await getAmountAssetByStr(amountStr)
 
     const ret = {
@@ -42,6 +43,7 @@ adapterMap.transfer = async function (args, extra, resolve, reject) {
             amount,
             originalArgs: { amountStr }
         }),
+        options,
         success: function (result) {
             resolve(result)
         },
@@ -57,7 +59,7 @@ adapterMap.transfer = async function (args, extra, resolve, reject) {
 }
 
 adapterMap.vote = async function (args, extra, resolve, reject) {
-    const [accounts, feeAssetSymbol, broadcast] = args
+    const [accounts, feeAssetSymbol, broadcast, options = {}] = args
 
     const ret = {
         ...makeFakeTransactionStruc('vote', {
@@ -65,6 +67,7 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
             accounts,
             feeAssetSymbol
         }),
+        options,
         success: function (result) {
             resolve(result)
         },
