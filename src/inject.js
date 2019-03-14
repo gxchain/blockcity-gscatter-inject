@@ -7,7 +7,7 @@ import { WITNESS_MAP } from './const'
 import Error from './Error'
 import taskQueue from './taskQueue'
 
-function isBridgeProvideMethod(name) {
+function isTransactionMethod(name) {
     const arr = ['callContract', 'transfer', 'vote']
     return arr.includes(name)
 }
@@ -64,6 +64,30 @@ class GScatter {
         return Promise.resolve('')
     }
 
+    /***
+     * Requests a signature for arbitrary data.
+     * @param publicKey - publicKey其实用不上，只有chrome extension有用
+     * @param data - The data to be signed, will use Buffer.from(data) when sign
+     * @param whatfor - 用不上
+     */
+    getArbitrarySignature(publicKey, data, whatfor = '') {
+        const args = arguments
+        return new Promise((resolve, reject) => {
+            const callback = (...args) => {
+                return this._bridge.getArbitrarySignature(...args).catch(err => {
+                    throw apiUniErrorHandler(err, null, 'getArbitrarySignature')
+                })
+            }
+
+            taskQueue.push({
+                callback,
+                args,
+                resolve,
+                reject
+            })
+        })
+    }
+
     async _getWitness() {
         const chainId = await getChainId()
         return WITNESS_MAP[chainId]
@@ -81,9 +105,9 @@ class GScatter {
         })
         const gxclientProxy = new Proxy(gxclient, {
             get(target, name) {
-                if (isBridgeProvideMethod(name)) {
+                if (isTransactionMethod(name)) {
                     // 必须是支持promise的
-                    return self._getBridgeMethod(name)
+                    return self._getTransactionMethod(name)
                 }
 
                 // pc端目前的规范是所有接口promise化
@@ -102,18 +126,14 @@ class GScatter {
         return gxclientProxy
     }
 
-    _getBridgeMethod(name) {
+    _getTransactionMethod(name) {
         return (...args) => {
             return new Promise((resolve, reject) => {
                 const callback = (...args) => {
                     // 只有需要发起交易的请求，才这样处理，如果不需要发起交易，则不需要处理requiredFields
-                    const requiredFields = args.find(arg => arg.hasOwnProperty('requiredFields'))
+                    const requiredFields = args.find(arg => arg && arg.hasOwnProperty('requiredFields'))
 
                     return this._bridge[name](...args).then(res => {
-                        try {
-                            res = JSON.parse(decodeURIComponent(res))
-                        } catch (err) { }
-
                         const trxObj = {
                             block_num: res.data.block_num,
                             id: res.data.trx_id,

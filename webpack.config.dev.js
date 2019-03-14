@@ -14,6 +14,11 @@ module.exports = {
             }
         ]
     },
+    resolve: {
+        alias: {
+            'gxclient': path.resolve(__dirname, 'node_modules/gxclient/lib')
+        }
+    },
     output: {
         path: path.resolve(__dirname, 'dev'),
         filename: 'inject.js'

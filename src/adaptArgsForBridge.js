@@ -1,5 +1,8 @@
+/**
+ * adapt args for native bridge args
+ */
 import { getAmountAssetByStr } from './chainService'
-import { makeFakeTransactionStruc } from './util'
+import { makeFakeTransactionStruc, handleRes } from './util'
 const adapterMap = {}
 
 adapterMap.callContract = async function (args, extra, resolve, reject) {
@@ -82,6 +85,28 @@ adapterMap.vote = async function (args, extra, resolve, reject) {
     return ret
 }
 
+adapterMap.getArbitrarySignature = async function (args, extra, resolve, reject) {
+    const [publicKey, data, whatfor] = args
+
+    const ret = {
+        ...makeFakeTransactionStruc('arbitrarysignature', {
+            account: extra.account,
+            data
+        }),
+        success: function (result) {
+            resolve(result)
+        },
+        fail: function (result) {
+            reject(result)
+        },
+        cancel: function (result) {
+            reject(result)
+        }
+    }
+
+    return ret
+}
+
 adapterMap._noIdentity = async function (args, extra, resolve, reject) {
     const ret = {
         ...makeFakeTransactionStruc('noidentity'),
@@ -100,5 +125,7 @@ adapterMap._noIdentity = async function (args, extra, resolve, reject) {
 }
 
 export default function (name, args, ctx, resolve, reject) {
-    return adapterMap[name](args, ctx, resolve, reject)
+    return adapterMap[name](args, ctx, resolve, reject).then(res => {
+        return handleRes(res)
+    })
 }

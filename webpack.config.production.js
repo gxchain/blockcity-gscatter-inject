@@ -19,6 +19,11 @@ module.exports = {
         path: path.resolve(__dirname, 'dist'),
         filename: 'inject.js'
     },
+    resolve: {
+        alias: {
+            'gxclient': path.resolve(__dirname, 'node_modules/gxclient/lib')
+        }
+    },
     // plugins: [new BundleAnalyzerPlugin()],
     optimization: {
         minimizer: [

@@ -46,6 +46,19 @@ class Bridge {
         })
     }
 
+    getArbitrarySignature() {
+        return new Promise(async (resolve, reject) => {
+            try {
+                await this._identityGuard(this.ctx.identity)
+            } catch (err) {
+                reject(err)
+                return
+            }
+            const adaptedArgs = await adaptArgsForBridge('getArbitrarySignature', arguments, this.ctx, resolve, reject)
+            callContract(adaptedArgs)
+        })
+    }
+
     async _identityGuard(identity) {
         if (!identity) {
             await this._noIdentity()

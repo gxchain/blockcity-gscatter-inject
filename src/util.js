@@ -15,3 +15,14 @@ export function makeFakeTransactionStruc(type, data = {}) {
         extra: data
     }
 }
+
+export function handleRes(res) {
+    const sourceSuccess = res.success
+    res.success = function (ret) {
+        try {
+            ret = JSON.parse(decodeURIComponent(ret))
+        } catch (err) { }
+        sourceSuccess && sourceSuccess(ret)
+    }
+    return res
+}
