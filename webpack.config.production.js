@@ -32,7 +32,8 @@ module.exports = {
                 terserOptions: {
                     output: {
                         comments: false
-                    }
+                    },
+                    safari10: true
                 }
             })
         ]
